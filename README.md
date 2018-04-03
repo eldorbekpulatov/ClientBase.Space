@@ -7,7 +7,7 @@ Subscription Based Client Management WebApp that allows users to CRUD Companies/
 - Web interface is intuitive, neat, and functional. 
 - Makes use of:
   * Full Calendar
-  * DateTime Picker
+  * DateTime/Range Picker
   * Bootstrap
   * Google Maps API 
   * along with many other widgets to give the user the most fluid UI. 
