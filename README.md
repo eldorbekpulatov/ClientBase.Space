@@ -15,7 +15,5 @@ Subscription Based Client Management WebApp that allows users to CRUD Companies/
  - Demo account available.
     * Login: guest
     * Password: demoview
-    -
-  
   
   
