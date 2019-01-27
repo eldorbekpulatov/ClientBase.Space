@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+{% load static from staticfiles %}
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ClientBase.Space</title>
+
+    <!-- Custom CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Morris Charts JavaScript & StyleSheet-->
+    <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script> <!--DO NOT MOVE --> 
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!--DO NOT MOVE --> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" rel="stylesheet">
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js'></script> <!--DO NOT MOVE -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Include DateTimePicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    
+    <!--Include Data Tables-->
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+    <!--Extra style for the dataTables -->
+    <style type="text/css">
+        .pagination{margin: 2px 0px;} 
+        #myTable_length  {float: left;}
+        #myTable_filter {float: right;} 
+        #myTable_paginate {float: right;} 
+    </style>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.0/metisMenu.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/js/sb-admin-2.js"></script>
+
+    <!-- Include DateRange Picker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+</head>
+
+<body>
+    <div id="wrapper" >
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'dashboard' %}" style="margin-left: 20px;">ClientBase.space</a>
+            </div>
+          
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <img src="{% static 'PageIcons/1497137238_female1.png' %}" class="img-rounded center-block" width="125" height="125" style="margin-top: 10px">
+                            <p class="text-center" style="margin-top: 5px;">{{ request.user.get_full_name }}<br></p>
+                        </li>
+                        <li>
+                            <a href="{% url 'dashboard' %}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-list-alt fa-fw"></i> Directory<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'directory:list' %}"> View All</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'directory:create' %}"> Add New</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                        <li>
+                            <a href="{% url 'task:upcoming' %}"><i class="fa fa-tasks fa-fw"></i> Tasks</a>
+                        </li>
+                        
+                        <li>
+                            <a href="{% url 'calendar:schedule' %}"><i class="fa fa-calendar fa-fw"></i> Calendar</a>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-user-md fa-fw"></i> User<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{% url 'profile' %}">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}">Log Out</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        {% block content %}
+
+        {% endblock content %}
+
+    </div>
+    <!-- /#wrapper -->
+    
+    <nav class="navbar fixed-bottom navbar-light bg-faded navbar-default" style="margin: 0px;">
+        <a class="navbar-brand" href="/dashboard">ClientBase.Space</a>
+    </nav>
+
+</body>
+
+</html>

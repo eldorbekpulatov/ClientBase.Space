@@ -1,0 +1,91 @@
+{% extends "member.html" %}    
+
+{% block content %}
+{% load staticfiles %}
+
+<div id="page-wrapper" style="min-height: 259px;">
+    <div class="page-header">
+        <div class="pull-right header-btn-group">
+
+            <button type="button" class="btn btn-secondary" onclick="location.href = '/dashboard';"><i class="fa fa-arrow-left"></i> Go to Dashboard</button> 
+
+            <button type="button" class="btn btn-primary btn-rounded" onclick="window.location.href='/dir/new'"><i class="fa fa-plus"></i> Add</button>
+        </div>
+        <h1 style="margin:0px;">Upcoming Tasks</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    List of Upcoming Patients for:
+                    <select id="selectMe" class="custom-select">
+                        <option value="monthly">Next Month</option>
+                        <option value="weekly" selected>Next Week</option>
+                        <option value="daily">Next Day</option>
+                    </select>
+                </div>
+                <!-- /.panel-heading -->
+
+                <div class="panel-body">
+
+                    <!-- this is a dataTable for patients list -->
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <table class="table table-striped table-bordered table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Phone</th>
+                                    <th>Next Visit</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id='myTable_body'>
+
+                            </tbody>
+                        </table>
+                    </div> <!--/.datatablewrapper-->
+
+                </div> <!--/.panel-body -->
+            </div> <!--/.panel-default -->
+        </div><!--/.col-lg-12-->
+    </div><!--/.row-->
+</div> <!--/.page-wrapper -->
+
+<!-- this is for three types of dataTables -->
+<script type="text/javascript">  
+    $(document).ready(function(){
+        pullTable($('#selectMe').val());
+    });
+
+    $('#selectMe').change(function(){
+        pullTable($(this).val());
+    });
+
+    // AJAX GET
+    function pullTable(selection){
+        $.ajax({
+            type: 'GET',
+            url:'/tasks/pull', 
+            data: {'tableType' : selection},
+            success: function(data){
+                document.getElementById("myTable_body").innerHTML='';
+                fillDataTable(data);
+                // $("#myTable").dataTable();
+            },
+        });
+    };
+
+    function fillDataTable(data){
+        var innerHTML='';
+        for(i = 0; i < data.length; i++){
+            var subHTML= '<tr><td><a href="http://127.0.0.1:8000/dir/'+data[i].patID+'">'+data[i].patName+'</a></td><td><a href="tel:'+data[i].patNumber+'">'+data[i].patNumber+'</a></td><td>'+data[i].nextDate+' | <span style="color:'+data[i].color+';"> in '+data[i].upcoming+' days </span></td></tr>';
+            innerHTML=innerHTML+subHTML;
+        };
+        document.getElementById("myTable_body").innerHTML = innerHTML;
+    };
+
+</script>
+
+ 
+{% endblock content %}

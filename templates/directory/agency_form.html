@@ -1,0 +1,125 @@
+{% extends "member.html" %}    
+
+{% block content %}
+{% load static from staticfiles %}
+
+<div id="page-wrapper" style="min-height: 259px;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <div class="pull-right header-btn-group" >
+
+                    <button type="button" class="btn btn-secondary" onclick="location.href = '/profile';"><i class="fa fa-arrow-left"></i> Go to Profile</button> 
+                    <button type="button" class="btn btn-primary btn-rounded" onclick="window.location.href='/dir'"><i class="fa fa-list"></i> Directory</button>
+              </div>
+                <h1>Agency Form</h1>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    New Agency Form
+            </div>
+            <!-- /.panel-heading -->
+
+            <div class="panel-body">               	
+            	<form method='post' enctype="multipart/form-data">
+                    {% csrf_token %}
+
+    				<div class="form-group col-lg-6">
+            			<label>Agency Name</label>
+                        {{form.companyName}}
+			        </div>
+			        <!-- /.form-group col-lg-6 -->
+
+			        <div class="col-lg-6">
+			        	<label>Email</label>
+			        	<div class="form-group input-group">
+    	                    <span class="input-group-addon"><i class="glyphicon glyphicon-inbox" > </i></span>
+                                {{form.companyEmail}}
+			        	</div>
+			        </div>
+                    <!-- /.col-lg-6 -->
+
+                    <div class="col-lg-6">
+                        <label>Phone Number</label>
+    	                <div class="form-group input-group">
+    	                    <span class="input-group-addon"><i class="fa fa-phone" > </i></span>
+                                {{form.phoneNumber}}
+    	                </div>
+                    </div>
+                    <!-- /.col-lg-6-->
+
+                    <div class="col-lg-6">
+                        <label>Fax Number</label>
+    	                <div class="form-group input-group">
+    	                    <span class="input-group-addon"><i class="fa fa-fax" > </i></span>
+                                {{form.faxNumber}}
+    	                </div>
+                    </div>
+                    <!-- /.col-lg-6 -->
+                    
+                    <div class="form-group col-lg-9">
+                        <label>Address</label>
+                        <div class="input-group" >
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                                {{form.formatted_address}}
+                        </div>
+                    </div>
+                    <!-- /.form-group col-lg-9 -->
+                   
+
+                    <div class="form-group col-lg-3">
+                        <label>Apt/Suite</label>
+                        {{form.ext_address}}
+                    </div>  
+                    <!-- /.form-group col-lg-3 -->               
+                    
+
+                    <!-- this is to get the GMAP place ID: hidden from view, but required -->
+                    {{form.placeID.as_hidden}}
+                    
+                    <!-- Google Maps Api -->
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkRMHa1z11iCowzyXov67JdgBUrsaE81o&libraries=places&callback=initAutocomplete"
+                    async defer></script>
+                    <!-- autocomplete -->
+                    <script type="text/javascript">
+                    function initAutocomplete(){
+                        var input = document.getElementById("autocomplete");
+                        var autocomplete = new google.maps.places.Autocomplete(input);
+    
+                        google.maps.event.addListener(autocomplete, "place_changed", function(){
+                            var place = autocomplete.getPlace();
+                            document.getElementById("id_placeID").value = place.place_id;
+                            document.getElementById("autocomplete").value = place.formatted_address;
+                        });
+                    };
+                    </script>
+
+                    <div class="col-lg-12 ">
+                        <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
+                        <div class='header-btn-group pull-right'>
+                            <button type='submit' class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>  
+    		</div>
+    		<!-- /.panel-body -->
+
+            </div>
+            <!-- /.panel panel-default -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.page-wrapper -->
+
+
+{% endblock content %}

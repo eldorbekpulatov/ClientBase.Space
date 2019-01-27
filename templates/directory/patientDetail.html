@@ -1,0 +1,344 @@
+{% extends "member.html" %}    
+
+{% block content %}
+
+{% load static from staticfiles %}
+
+<div id="page-wrapper" style="min-height: 259px;">
+    
+    <div class="page-header">
+        <div class="pull-right header-btn-group" >
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-secondary" onclick="location.href = '/dir';"><i class="fa fa-arrow-left"></i> Go to Directory</button> 
+
+            <button type="button" class="btn btn-outline btn-primary" onclick="location.href = '/dir/edit/{{patient.id}}';"><i class="glyphicon glyphicon-pencil"></i> Edit Patient</button>
+           
+            {% if patient.status == "Active" %}
+            <button type="button" id="addEvent" class="btn btn-success" style="margin-top: 0px" data-toggle="modal" data-target="#createModal"><i class="fa fa-calendar-plus-o"></i>  Add Event</button>
+            {% endif %}
+            
+        </div>
+        <h1 style="margin:0px;">Patient</h1>
+    </div><!-- /.page-header -->
+
+   	<div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                
+                <div class="panel-heading">
+                    Patient Info
+                </div> <!-- /.panel-heading -->
+                
+
+                <div class="panel-body">
+                	<div class="col-lg-6 col-md-12 col-sm-12">
+                		<table class="table">
+						    <tbody>
+						      	<tr>
+						        	<td style="font-weight: bold;">Name:</td>
+						        	<td>{{patient.firstName}}, {{patient.lastName}}</td>
+						      	</tr>
+						      	<tr>
+						        	<td style="font-weight: bold;">Address:</td>
+						        	<td id="add_form"></td>
+                                    <!-- this is to format the address form -->
+                                    <script>
+                                        var full_add = '{{patient.formatted_address}}';
+                                        var ext_add = '{{patient.ext_address}}';
+                                        var pos = full_add.indexOf(",");
+
+                                        var start = full_add.slice(0, pos+1)+' '+ ext_add;
+                                        var end = full_add.slice(pos+1);
+
+                                        document.getElementById("add_form").innerHTML = start +'</br>'+ end;
+                                    </script>
+						      	</tr>
+						      	<tr>
+						      		<td style="font-weight: bold;">Phone:</td>
+						      		<td><a href="tel:{{patient.phoneNumber}}">{{patient.phoneNumber}}</a></td>
+						      	</tr>
+						      	<tr>
+						      		<td style="font-weight: bold;">Agency:</td>
+						      		<td><a href="{% url 'getAgency' patient.agency.id %}"">{{patient.agency}}</a></td>
+						      	</tr>
+						      	<tr>
+						      		<td style="font-weight: bold;">Birth Date:</td>
+						      		<td>{{patient.DOB}}</td>
+						      	</tr>
+						      	<tr>
+						      		<td style="font-weight: bold;">Sex:</td>
+						      		<td>{% if patient.sex == "M" %}
+		                					Male
+		                				{%else %}
+		                					Female
+		                				{% endif %}
+		                			</td>
+						      	</tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Frequency:</td>
+                                    <td>{{patient.visitType}}</td>
+                                </tr>
+						      	<tr>
+						      		<td style="font-weight: bold;">Status:</td>
+						      		<td>{{patient.status}}</td>
+						      	</tr>
+						     
+						    </tbody>
+						  </table>
+	                </div> <!-- /.col-lg-6 col-md-12 col-sm-12 -->
+
+
+	                <div class="visible-lg" >
+	        			<div id="map_canvas" style="height:300px; width:425px; float:left; "></div>
+                    </div>
+
+
+                    {% for doc in patient.document_set.all %}
+                        {% if not doc.file %}
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="alert alert-warning" style="margin-bottom: 10px; margin-top: 0px;">
+                                    <strong>Pending:</strong>  {{doc.visitDate}}
+                                    <div class="pull-right" style="margin-top: -7px;" >
+                                        <!-- delete Button -->
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" onclick="passDocID(`{{doc.id}}`, '{{doc.visitDate}}')" data-target="#deleteModal"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <!-- upload doc button -->
+                                        <button type="button" class="btn btn-success" style="margin-top: 0px" data-toggle="modal" onclick="passDocID(`{{doc.id}}`, '{{doc.visitDate}}')" data-target="#uploadModal"><i class="fa fa-upload"></i>  Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+
+                    <div class="col-lg-12" >
+                        <hr style="margin-top: 0px" /> <!-- horizontal rule -->
+                    	<div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                            <table class="table table-striped table-bordered table-hover" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>Document Submissions</th>
+                                        <th>Date of Visit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for doc in patient.document_set.all %}
+                                        {% if doc.file %}
+                                    	<tr>
+                                            <td><a data-toggle="modal" onclick="passLink(`{{doc.file.url}}`)" data-target="#myModal">{{doc}}</a></td>
+                                            <td><a data-toggle="modal" data-target="#dateTimeModal" onclick="passDateTime(`{{doc.visitDate|date:'Y-m-d H:i'}}`, `{{doc.endDate|date:'Y-m-d H:i'}}`, `{{doc.id}}`)">{{doc.visitDate}}</a></td>   
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> <!--/.dataTables_wrapper-->
+                    </div>  <!--/.col-lg-12 -->
+
+
+                </div> <!-- /.panel-body -->   
+            </div> <!-- /.panel panel-default -->   
+        </div> <!-- /.col-lg-12 -->  
+    </div> <!-- /.row --> 
+</div> <!-- /.page-wrapper -->
+
+
+<!-- Modal to view the documents-->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{patient.firstName}} {{patient.lastName}}</h4>
+        </div>
+        <div class="modal-body">
+          <object type='application/pdf' id="objectlink" style="width: 99%; height: 400px;"></object>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+<!-- Modal to upload Documents -->
+<div class="modal fade" id="uploadModal" role="dialog">
+    <div class="modal-dialog">
+        <form method="post" enctype="multipart/form-data" id='uploadform'>
+            {% csrf_token %}    
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{patient.firstName}} {{patient.lastName}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group" style="width:100%">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                            <strong>File: </strong> 
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <input type="file" id='file' name="file_field" required>
+                        </div>
+                    </div> 
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit"  class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- Modal for changeDate -->
+<div class="modal fade" id="dateTimeModal" role="dialog">
+    <div class="modal-dialog">
+    <form method="post" id="datechangeform" action=''>
+        {% csrf_token %}
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{patient.firstName}} {{patient.lastName}}</h4>
+        </div>
+        <div class="modal-body">
+	        <div class="form-group" style="width:100%">
+	            <div class='input-group date' id='datetimepickerup'>
+                    <input class='form-control' name='eventrange_update' onchange="updateRange()" required>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+	            </div>
+
+                <input  type=hidden id="startTimeChange" name="docNewDateStart" required/>
+                <input  type=hidden id="endTimeChange" name="docNewDateEnd" required/>
+
+	    	</div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-warning">Change</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      </form>
+    </div>
+</div>
+
+<!-- Modal to Create Events -->
+<div class="modal fade" id="createModal" role="dialog">
+    <div class="modal-dialog">
+        <form method="post" enctype="multipart/form-data" action='{% url "directory:eventCreate" patient.id %}' >
+            {% csrf_token %}    
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Patient: {{patient.firstName}} {{patient.lastName}}</h4>
+                </div>
+
+                <div class="modal-body" style="height: 110px">
+
+                    <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <strong>File: </strong> 
+                    </div>
+                    <div class="form-group col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                        <input type="file" class='form-control' name="file_field">
+                    </div>
+
+                    <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <strong>Date: </strong> 
+                    </div>
+                    <div class="form-group col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                        <div class='input-group date' id='datetimepickerup'>
+                            <input class='form-control' name='eventrange_create' id="createRange" required>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <input type="hidden" id="startTimeCreate" name="docNewDateStart" required/>
+                        <input type="hidden" id="endTimeCreate" name="docNewDateEnd" required/>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit"  class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- Modal to Delete events -->
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+        <form method="post" enctype="multipart/form-data" id='deleteform'>
+            {% csrf_token %}    
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{patient.firstName}} {{patient.lastName}}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group" style="width:100%" id="delConfirm"></div> 
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit"  class="btn btn-danger">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<script src="{% static 'js/patientDetail.js' %}"></script>
+
+<!-- Google Maps Api -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkRMHa1z11iCowzyXov67JdgBUrsaE81o&libraries=places&callback=initAutocomplete"
+    async defer></script>
+    
+<!--Include GMap -->
+<script type="text/javascript">
+    function initAutocomplete(){
+        var placeId='{{patient.placeID}}';
+        // console.log(placeID);
+        var geocoder = new google.maps.Geocoder; 
+        var infowindow = new google.maps.InfoWindow;
+
+        geocoder.geocode( {'placeId': placeId}, function(results, status){ 
+            if (status === 'OK') {
+                var map_options = {
+                    center: results[0].geometry.location,
+                    zoom: 13,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    streetViewControl: false };
+
+                var map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
+
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location });
+                
+                infowindow.setContent(results[0].formatted_address);
+                infowindow.open(map, marker); 
+            }; 
+        });
+    };
+</script>
+
+
+{% endblock content %}

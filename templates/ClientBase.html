@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+
+{% load static from staticfiles %}
+
+<html>
+  <head>
+    <title>ClientBase.space</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Quicksand" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styleHP.css' %}">
+
+  </head>
+
+  <body>  
+    <div class="header" > 
+        <div id="header-text">
+        <h1>Manage Patients Effortlessly</h1>
+        <h2>Paperless, reliable, and effective way to manage clients.</h2>
+        <button id ="btn" onclick="document.getElementById('id01').style.display='block'" style="width: 20%;">Login</button>
+        </div>
+    </div>
+
+    <div id="id01" class="modal">
+      <div class="modal-content animate">
+        <form method='post' role='form' >
+          {% csrf_token %}
+          <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <img src="/static/PageIcons/1497137238_female1.png" alt="Avatar" class="avatar">
+          </div>
+
+          <div class="container">
+            <label><b>Username</b></label>
+            {{form.username}} 
+
+            <label><b>Password</b></label>
+            {{form.password}}
+              
+            <button type="submit">Login</button>
+          </div>
+        </form>
+        <div class="container" style="background-color:#f1f1f1">
+          <button onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+          <span class="psw"><a href="#" title="User Alert" data-toggle="popover" data-trigger="focus" data-content="Contact: eldorbek0526@gmail.com"> Forgot password?</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="footer" >
+      <h4 id="dev"> Developed by Eldor Bekpulatov</h4>
+    </div>
+
+
+    <script>
+      // Get the modal
+      var modal = document.getElementById('id01');
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none"; } };
+      
+      $(document).ready(function(){
+          $('[data-toggle="popover"]').popover();   
+      });
+    </script>
+
+  </body>
+</html>
