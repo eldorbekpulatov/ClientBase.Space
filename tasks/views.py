@@ -6,7 +6,7 @@ from directory.models import Patient, Document, Agency
 # this is for login request and redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from myproject.class_decorator import class_view_decorator
+from clientbase.class_decorator import class_view_decorator
 
 
 # Create your views here.

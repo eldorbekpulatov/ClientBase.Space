@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView
 # this is to request login and redirect after
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from myproject.class_decorator import class_view_decorator
+from clientbase.class_decorator import class_view_decorator
 
 
 # Create your views here.
