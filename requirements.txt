@@ -1,6 +1,6 @@
-dj-database-url==0.5.0
-django>=2.0.10
-gunicorn==19.7.1
-pytz==2018.3
-whitenoise==3.3.1
-python-dateutil>=2.7.3
+dj-database-url
+django
+gunicorn
+pytz
+whitenoise
+python-dateutil

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% load static from staticfiles %}
+{% load static %}
 
 <!-- Include Full Calendar CDN -->
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.0/fullcalendar.min.css' />
@@ -153,6 +153,6 @@
     </div>
 </div>
 
-<script src="{% static 'js/calendar.js' %}"></script>
+<script src="../../static/js/calendar.js"></script>
 
 {% endblock content %}
