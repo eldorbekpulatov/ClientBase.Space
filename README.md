@@ -1,4 +1,4 @@
-# [ClientBase.Space](http://clientbasespace.herokuapp.com)
+# [ClientBase.Space](https://clienbasespace.herokuapp.com)
 Subscription Based Client Management WebApp that allows users to CRUD Companies/Clients/Events/Documents (in that hierarchy).
 
 - Incorporates AJAX techniques to communicate with main server for real time updates. 
