@@ -1,6 +1,7 @@
 dj-database-url
 django
 gunicorn
+psycopg2
 pytz
 whitenoise
 python-dateutil
