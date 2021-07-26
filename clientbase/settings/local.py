@@ -141,3 +141,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "live-static", "media-root")
 GOOGLE_API_KEY = 'AIzaSyDdGjBJhzh3z-nnDiMRXBdbA32aoRVayQ4'
 
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
