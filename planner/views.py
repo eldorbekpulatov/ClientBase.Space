@@ -11,7 +11,6 @@ from directory.models import Patient, Document, Agency
 # Create your views here.
 @login_required
 def CalendarView(request):
-	print('hello')
 	context={ 'patients': request.user.patient_set.filter(status__iexact='active')}
 	return render(request, 'calendar/calendar.html', context)
 

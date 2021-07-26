@@ -35,7 +35,6 @@ ALLOWED_HOSTS = ['clientbasespace.herokuapp.com', 'clientbase.space', 'www.clien
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
