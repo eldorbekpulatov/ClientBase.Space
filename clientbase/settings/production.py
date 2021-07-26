@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = 'd6-#1$+%huz-m*%qvy!kerm=)&10zfbi7c-_d+k))-$u^i_1iw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # this is for class decorator that redirects to login url
 LOGIN_URL='/'
