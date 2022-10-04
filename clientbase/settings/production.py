@@ -31,7 +31,7 @@ ADMINS = (
             ("Eldor Bekpulatov", 'eldorbek0526@gmail.com'),
         )
 
-ALLOWED_HOSTS = ['clientbase-space.herokuapp.com', 'clientbase.space', 'www.clientbase.space', '*.clientbase.space']
+ALLOWED_HOSTS = ['*.herokuapp.com', 'clientbase.space', 'www.clientbase.space', '*.clientbase.space']
 
 
 # Application definition
