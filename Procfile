@@ -1,1 +1,1 @@
-web: gunicorn clientbase.wsgi
+web: gunicorn wsgi
