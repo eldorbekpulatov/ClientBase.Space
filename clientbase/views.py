@@ -107,8 +107,8 @@ class loginView(View):
 			return redirect('dashboard')
 		else: 
 			form=self.form_class(None)
-			form.fields["username"].widget.attrs.update({'placeholder':'Enter Username'})
-			form.fields["password"].widget.attrs.update({'placeholder':'Enter Password'})
+			form.fields["username"].widget.attrs.update({'placeholder':'Hint: guest'})
+			form.fields["password"].widget.attrs.update({'placeholder':'Hint: demoview'})
 			return render(request, self.template_name, {'form': form})
 
 	# process the registeration data
