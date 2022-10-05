@@ -1,12 +1,12 @@
-from django.conf.urls import url
+from django.urls import re_path
 from . import views
 
 app_name='calendar'
 urlpatterns = [
-	url(r'^get$', views.getEvents), 
-	url(r'^pull$', views.pullEvent),
-	url(r'^post$', views.addEvents), 
-	url(r'^update$', views.updateEvents),
-	url(r'^delete$', views.deleteEvent),  
-	url(r'^$', views.CalendarView, name='schedule'),
+	re_path(r'^get$', views.getEvents), 
+	re_path(r'^pull$', views.pullEvent),
+	re_path(r'^post$', views.addEvents), 
+	re_path(r'^update$', views.updateEvents),
+	re_path(r'^delete$', views.deleteEvent),  
+	re_path(r'^$', views.CalendarView, name='schedule'),
 ]

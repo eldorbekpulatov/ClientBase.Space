@@ -14,24 +14,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url, include
+from django.urls import re_path, include
 from . import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    re_path(r'^admin/', admin.site.urls),
     
-    url(r'^$', views.loginView.as_view(), name='login'),
-    url(r'^logout$',  views.logout_view, name='logout'),
-    url(r'^dashboard/$', views.Dashboard, name='dashboard'),
+    re_path(r'^$', views.loginView.as_view(), name='login'),
+    re_path(r'^logout$',  views.logout_view, name='logout'),
+    re_path(r'^dashboard/$', views.Dashboard, name='dashboard'),
 
-    url(r'^profile/$', views.ProfileView, name='profile'),
-    url(r'^profile/agency/edit/(?P<pk>[a-zA-Z0-9_.-]+)', views.UpdateAgency.as_view(), name='editAgency'),
-    url(r'^profile/agency/(?P<pk>[a-zA-Z0-9_.-]+)', views.AgencyDetail.as_view(), name='getAgency'),
-    url(r'^profile/agency/$', views.CreateAgency.as_view(), name='agency'),
+    re_path(r'^profile/$', views.ProfileView, name='profile'),
+    re_path(r'^profile/agency/edit/(?P<pk>[a-zA-Z0-9_.-]+)', views.UpdateAgency.as_view(), name='editAgency'),
+    re_path(r'^profile/agency/(?P<pk>[a-zA-Z0-9_.-]+)', views.AgencyDetail.as_view(), name='getAgency'),
+    re_path(r'^profile/agency/$', views.CreateAgency.as_view(), name='agency'),
     
-    url(r'^tasks/', include("tasks.urls")),
-    url(r'^dir/', include("directory.urls")),
-    url(r'^calendar/', include("planner.urls")),
+    re_path(r'^tasks/', include("tasks.urls")),
+    re_path(r'^dir/', include("directory.urls")),
+    re_path(r'^calendar/', include("planner.urls")),
 
 ]
 

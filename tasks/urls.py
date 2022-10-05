@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.urls import re_path
 from . import views
 
 app_name='task'
 urlpatterns = [
-	url(r'^pull$', views.getTable),
-	url(r'^$', views.taskView, name='upcoming'),
+	re_path(r'^pull$', views.getTable),
+	re_path(r'^$', views.taskView, name='upcoming'),
 ]

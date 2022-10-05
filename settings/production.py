@@ -31,7 +31,7 @@ ADMINS = (
             ("Eldor Bekpulatov", 'eldorbek0526@gmail.com'),
         )
 
-ALLOWED_HOSTS = ['Clientbasespace-env-1.eba-ftuz7aj3.us-east-1.elasticbeanstalk.com', 'clientbase.space', 'www.clientbase.space', '.clientbase.space']
+ALLOWED_HOSTS = ['clientbase-space.herokuapp.com']
 
 
 # Application definition
